@@ -7,7 +7,7 @@
 <h2>Customers</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("New Customer", "Create",null, new { @class = "btn btn-primary" })
 </p>
 @if (!Model.Any())
 {
@@ -22,15 +22,9 @@ else
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.LastName)
-            </th>
+            </th>            
             <th>
-                @Html.DisplayNameFor(model => model.Birthdate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsSubscribedToNewLetter)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MembershipType.DiscountRate)
+                @Html.DisplayNameFor(model => model.MembershipType.Name)
             </th>
         </tr>
 
@@ -44,13 +38,7 @@ else
                     @Html.DisplayFor(modelItem => item.LastName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Birthdate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsSubscribedToNewLetter)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MembershipType.DiscountRate)%
+                    @Html.DisplayFor(modelItem => item.MembershipType.Name)
                 </td>
             </tr>
         }

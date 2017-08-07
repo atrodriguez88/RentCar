@@ -6,8 +6,10 @@ using System.Web;
 
 namespace RentCar.ViewModel
 {
-    public class NewCustomerViewModel
+    public class CustomersFormViewModel
     {
-        
+        public IEnumerable<MembershipType> MembershipTypes { get; set; }
+
+        public Customer Customer { get; set; }
     }
 }

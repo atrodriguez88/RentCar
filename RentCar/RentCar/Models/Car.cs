@@ -12,12 +12,14 @@ namespace RentCar.Models
 
         [Required]
         [StringLength(255)]
-        public string Brand { get; set; }
+        public Brand Brand { get; set; }
 
         [Required]
-        public DateTime Year { get; set; }
+        public DateTime ReleaseDate { get; set; }
 
         [Required]        
         public decimal Miles { get; set; }
+        [Required]
+        public short Stock { get; set; }
     }
 }
