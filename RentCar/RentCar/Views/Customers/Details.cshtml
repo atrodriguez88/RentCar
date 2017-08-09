@@ -27,11 +27,19 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.MembershipType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MembershipType.Name)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Birthdate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Birthdate)
+            @Html.DisplayFor(model => model.Birthdate, "{0:d MMM yyyy}")
         </dd>
 
         <dt>

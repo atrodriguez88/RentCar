@@ -18,18 +18,11 @@
             @Html.DisplayFor(model => model.Brand.Name)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Brand.Version)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Brand.Version)
-        </dd>
-        <dt>
             @Html.DisplayNameFor(model => model.ReleaseDate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ReleaseDate)
+            @Html.DisplayFor(model => model.ReleaseDate,"{0:d MMM yyyy}")
         </dd>
 
         <dt>

@@ -28,7 +28,7 @@ namespace RentCar.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Car car = db.Cars.Find(id);
+            Car car = db.Cars.Include(c =>c.Brand).FirstOrDefault(c => c.Id == id);
             if (car == null)
             {
                 return HttpNotFound();
@@ -51,10 +51,12 @@ namespace RentCar.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ReleaseDate,Miles,Stock")] Car car)
+        public ActionResult Create([Bind(Include = "Id,ReleaseDate,Miles,Stock,Brand")] Car car)
         {
             if (ModelState.IsValid)
             {
+                var brand = db.Brands.FirstOrDefault(b => b.Id == car.Brand.Id);
+                car.Brand = brand;
                 db.Cars.Add(car);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -75,7 +77,12 @@ namespace RentCar.Controllers
             {
                 return HttpNotFound();
             }
-            return View(car);
+            var editCar = new CarFormViewModel
+            {
+                Car = car,
+                Brands = db.Brands.ToList()
+            };
+            return View(editCar);
         }
 
         // POST: Cars/Edit/5
@@ -83,12 +90,20 @@ namespace RentCar.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ReleaseDate,Miles,Stock")] Car car)
+        public ActionResult Edit([Bind(Include = "Id,ReleaseDate,Miles,Stock,Brand")] Car car)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(car).State = EntityState.Modified;
+                var brand = db.Brands.FirstOrDefault(b => b.Id == car.Brand.Id);
+                //db.Entry(car).State = EntityState.Modified;       This line does not work in this case
+
+                var carU = db.Cars.Single(c => c.Id == car.Id);
+                carU.Miles = car.Miles;
+                carU.ReleaseDate = car.ReleaseDate;
+                carU.Stock = car.Stock;
+                carU.Brand = brand;
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
             return View(car);

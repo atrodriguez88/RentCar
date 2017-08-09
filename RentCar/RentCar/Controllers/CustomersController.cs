@@ -28,7 +28,7 @@ namespace RentCar.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = db.Customers.Find(id);
+            Customer customer = db.Customers.Include(c => c.MembershipType).FirstOrDefault(c => c.Id == id);
             if (customer == null)
             {
                 return HttpNotFound();
@@ -94,7 +94,16 @@ namespace RentCar.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(customer).State = EntityState.Modified;
+                var membership = db.MembershipTypes.FirstOrDefault(b => b.Id == customer.MembershipType.Id);
+                //db.Entry(customer).State = EntityState.Modified;          This line does not work in this case
+
+                var customerU = db.Customers.Single(c => c.Id == customer.Id);
+                customerU.IsSubscribedToNewLetter = customer.IsSubscribedToNewLetter;
+                customerU.Birthdate = customer.Birthdate;
+                customerU.LastName = customer.LastName;
+                customerU.Name = customer.Name;
+                customerU.MembershipType = membership;
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

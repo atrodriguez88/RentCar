@@ -9,6 +9,10 @@
 <p>
     @Html.ActionLink("New Car", "Create",null,new { @class = "btn btn-primary"})
 </p>
+@if (!Model.Any())
+{
+    <p> We don't have any cars yet</p>
+}
 <table class="table">
     <tr>
         <th>

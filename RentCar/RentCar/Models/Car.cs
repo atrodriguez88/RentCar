@@ -10,8 +10,6 @@ namespace RentCar.Models
     {
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(255)]
         public Brand Brand { get; set; }
 
         [Required]
