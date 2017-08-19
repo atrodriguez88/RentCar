@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using RentCar.Models;
 using RentCar.ViewModel;
@@ -13,30 +9,30 @@ namespace RentCar.Controllers
 {
     public class CarsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Cars
         public ActionResult Index()
         {
-            return View(db.Cars.Include(c=>c.Brand).ToList());
+            var cars = db.Cars.Include(c => c.Brand).ToList();
+            if (User.IsInRole(RoleName.SuperAdmin))
+                return View("Index", cars);
+            return View("IndexUser", cars);
         }
 
         // GET: Cars/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Car car = db.Cars.Include(c =>c.Brand).FirstOrDefault(c => c.Id == id);
+            var car = db.Cars.Include(c => c.Brand).FirstOrDefault(c => c.Id == id);
             if (car == null)
-            {
                 return HttpNotFound();
-            }
             return View(car);
         }
 
         // GET: Cars/Create
+        [Authorize(Roles = RoleName.SuperAdmin)]
         public ActionResult Create()
         {
             var newCar = new CarFormViewModel
@@ -51,11 +47,12 @@ namespace RentCar.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ReleaseDate,Miles,Stock,Brand")] Car car)
+        [Authorize(Roles = RoleName.SuperAdmin)]
+        public ActionResult Create([Bind(Include = "Id,ReleaseDate,Miles,Stock,Brand_Id")] Car car)
         {
             if (ModelState.IsValid)
             {
-                var brand = db.Brands.FirstOrDefault(b => b.Id == car.Brand.Id);
+                var brand = db.Brands.FirstOrDefault(b => b.Id == car.Brand_Id);
                 car.Brand = brand;
                 db.Cars.Add(car);
                 db.SaveChanges();
@@ -66,17 +63,14 @@ namespace RentCar.Controllers
         }
 
         // GET: Cars/Edit/5
+        [Authorize(Roles = RoleName.SuperAdmin)]
         public ActionResult Edit(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Car car = db.Cars.Find(id);
+            var car = db.Cars.Find(id);
             if (car == null)
-            {
                 return HttpNotFound();
-            }
             var editCar = new CarFormViewModel
             {
                 Car = car,
@@ -90,11 +84,12 @@ namespace RentCar.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ReleaseDate,Miles,Stock,Brand")] Car car)
+        [Authorize(Roles = RoleName.SuperAdmin)]
+        public ActionResult Edit([Bind(Include = "Id,ReleaseDate,Miles,Stock,Brand_Id")] Car car)
         {
             if (ModelState.IsValid)
             {
-                var brand = db.Brands.FirstOrDefault(b => b.Id == car.Brand.Id);
+                var brand = db.Brands.FirstOrDefault(b => b.Id == car.Brand_Id);
                 //db.Entry(car).State = EntityState.Modified;       This line does not work in this case
 
                 var carU = db.Cars.Single(c => c.Id == car.Id);
@@ -110,26 +105,25 @@ namespace RentCar.Controllers
         }
 
         // GET: Cars/Delete/5
+        [Authorize(Roles = RoleName.SuperAdmin)]
         public ActionResult Delete(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Car car = db.Cars.Find(id);
+            var car = db.Cars.Find(id);
             if (car == null)
-            {
                 return HttpNotFound();
-            }
             return View(car);
         }
 
         // POST: Cars/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = RoleName.SuperAdmin)]
         public ActionResult DeleteConfirmed(int id)
         {
-            Car car = db.Cars.Find(id);
+            var car = db.Cars.Find(id);
             db.Cars.Remove(car);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -138,9 +132,7 @@ namespace RentCar.Controllers
         protected override void Dispose(bool disposing)
         {
             if (disposing)
-            {
                 db.Dispose();
-            }
             base.Dispose(disposing);
         }
     }

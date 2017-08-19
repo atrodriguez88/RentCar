@@ -12,6 +12,9 @@ namespace RentCar.Models
 
         public Brand Brand { get; set; }
 
+        [Display(Name ="Brand")]
+        public byte Brand_Id { get; set; }
+
         [Required]
         public DateTime ReleaseDate { get; set; }
 

@@ -13,7 +13,7 @@
 {
     <p> We don't have any cars yet</p>
 }
-<table class="table">
+<table id="tbCars" class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Brand.Name)
@@ -25,13 +25,16 @@
             @Html.DisplayNameFor(model => model.Miles)
         </th>
         
-        <th></th>
+        <th>
+            Delete
+        </th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
     <tr>
         <td>
-            @Html.ActionLink(item.Brand.Name, "Details", new { id = item.Id})
+            @Html.ActionLink(item.Brand.Name, "Details", new { id = item.Id })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ReleaseDate)
@@ -39,7 +42,35 @@
         <td>
             @Html.DisplayFor(modelItem => item.Miles)
         </td>
+        <td>
+            <button data-car-id="@item.Id" class="btn btn-link js-delete">Delete</button>
+        </td>
     </tr>
 }
 
 </table>
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+            $("#tbCars").on("click",
+                ".js-delete",
+                function () {
+                    var button = $(this);
+                    bootbox.confirm("Do you want to Delete a car?",
+                        function(result) {
+                            if (result) {
+                                $.ajax({
+                                    url: "/api/Cars/" + button.attr("data-car-id"),
+                                    method: "DELETE",
+                                    success: function(responde) {
+                                        console.log("Success");
+                                        button.parent("tr").remove();
+                                    }
+                                });
+                            }
+                        });
+                });
+        });
+    </script>
+}

@@ -16,9 +16,9 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.Car.Brand, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Car.Brand_Id, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.Car.Brand.Id,new SelectList(Model.Brands,"Id","Name"), "Select Brand Car",new { @class = "form-control"})
+                @Html.DropDownListFor(model => model.Car.Brand_Id,new SelectList(Model.Brands,"Id","Name"), "Select Brand Car",new { @class = "form-control"})
                 @Html.ValidationMessageFor(model => model.Car.Brand, "", new { @class = "text-danger" })
             </div>
         </div>

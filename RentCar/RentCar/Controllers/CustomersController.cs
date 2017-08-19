@@ -51,11 +51,11 @@ namespace RentCar.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,LastName,Birthdate,IsSubscribedToNewLetter,MembershipType")] Customer customer)
+        public ActionResult Create([Bind(Include = "Id,Name,LastName,Birthdate,IsSubscribedToNewLetter,MembershipType_Id")] Customer customer)
         {
             if (ModelState.IsValid)
             {
-                var membership = db.MembershipTypes.SingleOrDefault(m => m.Id == customer.MembershipType.Id);
+                var membership = db.MembershipTypes.SingleOrDefault(m => m.Id == customer.MembershipType_Id);
                 customer.MembershipType = membership;
                 db.Customers.Add(customer);
                 db.SaveChanges();
@@ -90,11 +90,11 @@ namespace RentCar.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,LastName,Birthdate,IsSubscribedToNewLetter,MembershipType")] Customer customer)
+        public ActionResult Edit([Bind(Include = "Id,Name,LastName,Birthdate,IsSubscribedToNewLetter,MembershipType_Id")] Customer customer)
         {
             if (ModelState.IsValid)
             {
-                var membership = db.MembershipTypes.FirstOrDefault(b => b.Id == customer.MembershipType.Id);
+                var membership = db.MembershipTypes.FirstOrDefault(b => b.Id == customer.MembershipType_Id);
                 //db.Entry(customer).State = EntityState.Modified;          This line does not work in this case
 
                 var customerU = db.Customers.Single(c => c.Id == customer.Id);

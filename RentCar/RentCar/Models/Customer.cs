@@ -22,6 +22,10 @@ namespace RentCar.Models
 
         public bool IsSubscribedToNewLetter { get; set; }
 
+        
         public MembershipType MembershipType { get; set; }
+
+        [Display(Name = "Membreship Type")]
+        public byte MembershipType_Id { get; set; }
     }
 }

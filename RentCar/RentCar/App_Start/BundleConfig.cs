@@ -21,10 +21,15 @@ namespace RentCar
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/bootbox.js",
+                      "~/Scripts/respond.js",
+                      "~/Scripts/datatables/jquery.datatables.js",
+                      "~/scripts/datatables/datatables.bootstrap.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/datatables/css/jquery.dataTables.css",
+                      "~/Content/datatables/css/datatables.bootstrap.css",
                       "~/Content/site.css"));
         }
     }
