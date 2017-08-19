@@ -76,7 +76,7 @@ namespace RentCar.Controllers.Api
         }
 
         // POST: api/Customers
-        [ResponseType(typeof(Customer))]
+        [ResponseType(typeof(CustomerDto))]
         public IHttpActionResult PostCustomer(CustomerDto customerDto)
         {
             if (!ModelState.IsValid)
@@ -93,7 +93,7 @@ namespace RentCar.Controllers.Api
         }
 
         // DELETE: api/Customers/5
-        [ResponseType(typeof(Customer))]
+        [ResponseType(typeof(CustomerDto))]
         public IHttpActionResult DeleteCustomer(int id)
         {
             Customer customer = db.Customers.SingleOrDefault(c =>c.Id == id);

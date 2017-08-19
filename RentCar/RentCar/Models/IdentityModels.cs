@@ -22,6 +22,7 @@ namespace RentCar.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Rental> Rentals { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<MembershipType> MembershipTypes { get; set; }

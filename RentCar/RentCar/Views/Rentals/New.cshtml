@@ -1,0 +1,54 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "New Rental";
+}
+
+<h2>New Rental</h2>
+
+@using (Ajax.BeginForm("New", new AjaxOptions()
+{
+    HttpMethod = "POST",
+    InsertionMode = InsertionMode.Replace,
+    OnBegin = "Inicio",
+    UpdateTargetId = "resp"
+
+}))
+{
+    <div class="form-group">
+        <label>Customer</label>
+        <input id="customer" name="customer" type="text" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Car</label>
+        <input id="car" name="car" type="text" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Submit" class="btn btn-primary" />
+    </div>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval") @*add require in html component*@
+
+
+    @*    This is a example for Ajax and Toast*@
+
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    @*Add toastr.js and css in BundleConfig*@
+    <script src="~/Scripts/toastr.js"></script>
+    <script>
+        function Inicio() {
+            toastr.success("Rental success");
+        }
+
+        $(document).ready(function() {
+            $("#form0").validate({
+                submitHandler: function() {
+                    //Here code  
+                }
+            });
+        });
+    </script>
+}

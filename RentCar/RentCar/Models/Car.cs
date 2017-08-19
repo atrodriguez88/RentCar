@@ -22,5 +22,6 @@ namespace RentCar.Models
         public decimal Miles { get; set; }
         [Required]
         public short Stock { get; set; }
+        public short NumberAvailable { get; set; }
     }
 }
